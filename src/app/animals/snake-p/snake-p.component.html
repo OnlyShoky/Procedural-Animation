@@ -1,0 +1,21 @@
+<div
+  class="board"
+  [style.width.px]="boardWidth"
+  [style.height.px]="boardHeight"
+  (mousemove)="onMouseMove($event)"
+>
+  <div
+    *ngFor="let joint of joints; let i = index"
+    class="joint"
+    [style.transform]="'translate(' + joint.x + 'px, ' + joint.y + 'px)'"
+    [ngClass]="{ head: i === 0 }"
+  ></div>
+
+  <div class="snake-position">
+    <p>snake position:</p>
+    <p>X: {{ this.mouseX| number: '1.0-2' }} px</p>
+    <p>Y: {{ this.mouseY | number: '1.0-2'}} px</p>
+    <p>X: {{ this.boardWidth | number: '1.0-2' }} px</p>
+    <p>Y: {{ this.boardHeight | number: '1.0-2'}} px</p>
+  </div>
+</div>

@@ -1,0 +1,30 @@
+.board {
+    position: relative;
+    overflow: hidden;
+    border: 2px solid black;
+  }
+  
+  .joint {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: green;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+  }
+  
+  .joint.head {
+    background: red; /* Different color for the head */
+  }
+
+  .snake-position {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background-color: rgba(26, 145, 50, 0.5);
+    color: white;
+    padding: 5px;
+    border-radius: 5px;
+  }
+
+  

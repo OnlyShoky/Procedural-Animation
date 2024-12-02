@@ -207,7 +207,7 @@ export class SnakePComponent implements OnInit, OnDestroy {
   
       if (distanceToTarget > threshold) {
         const targetAngle = Math.atan2(dy, dx);
-        this.angles[0] = this.utilService.constrainAngle(targetAngle, this.angles[0], maxAngle);
+        this.angles[0] = this.utilService.constrainAngle(targetAngle, this.angles[1], maxAngle);
   
         head.x += Math.cos(this.angles[0]) * 4; // Move head towards the limited angle
         head.y += Math.sin(this.angles[0]) * 4;
@@ -229,14 +229,16 @@ export class SnakePComponent implements OnInit, OnDestroy {
           prevJoint.y - currentJoint.y,
           prevJoint.x - currentJoint.x
         );
-  
-        currentJoint.x =
-          prevJoint.x - Math.cos(angle) * this.jointLength;
-        currentJoint.y =
-          prevJoint.y - Math.sin(angle) * this.jointLength;
-          
+
         // this.angles[i] = angle;
         this.angles[i] = this.utilService.constrainAngle(angle, this.angles[i-1], maxAngle);
+  
+        currentJoint.x =
+          prevJoint.x - Math.cos(this.angles[i]) * this.jointLength;
+        currentJoint.y =
+          prevJoint.y - Math.sin(this.angles[i]) * this.jointLength;
+          
+        
       }
     }
   }

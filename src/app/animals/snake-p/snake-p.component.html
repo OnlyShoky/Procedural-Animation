@@ -4,18 +4,65 @@
   [style.height.px]="boardHeight"
   (mousemove)="onMouseMove($event)"
 >
-  <div
+  <div class="snake-info">
+    <p>snake position:</p>
+    <p>X: {{ this.mouseX | number : "1.0-2" }} px</p>
+    <p>Y: {{ this.mouseY | number : "1.0-2" }} px</p>
+    <p>X: {{ this.boardWidth | number : "1.0-2" }} px</p>
+    <p>Y: {{ this.boardHeight | number : "1.0-2" }} px</p>
+    <p> Keyboard angle : {{ this.keyboardAngle | number : "1.0-2" }}</p>
+    <p> Snake angle : {{ this.angles[0] | number : "1.0-2" }}</p>
+  </div>
+
+  <!-- <div
     *ngFor="let joint of joints; let i = index"
     class="joint"
+    [style.width.px]= 'joint.size'
+    [style.height.px]= 'joint.size'
+    [style.border] = "'2px solid black'"
     [style.transform]="'translate(' + joint.x + 'px, ' + joint.y + 'px)'"
-    [ngClass]="{ head: i === 0 }"
-  ></div>
+    [ngClass]="{ head: i === 0 }">
+</div>
 
-  <div class="snake-position">
-    <p>snake position:</p>
-    <p>X: {{ this.mouseX| number: '1.0-2' }} px</p>
-    <p>Y: {{ this.mouseY | number: '1.0-2'}} px</p>
-    <p>X: {{ this.boardWidth | number: '1.0-2' }} px</p>
-    <p>Y: {{ this.boardHeight | number: '1.0-2'}} px</p>
-  </div>
+
+
+
+ -->
+
+  <mat-card class="snake-parameters">
+    <mat-card-content>
+      <section>
+        <label>Colors :</label>
+        <mat-radio-group color="primary" aria-label="Select a color" [(ngModel)]="choosedColor" (change)="onColorChange()">
+        <mat-radio-button value="Cobra"> Cobra </mat-radio-button>
+          <mat-radio-button value="Python"> Python </mat-radio-button>
+          <mat-radio-button value="BlackMamba"> Black Mamba </mat-radio-button>
+        </mat-radio-group>
+        
+      </section>
+
+      <section>
+        <label>Movement :</label>
+        <mat-radio-group color="accent" aria-label="Select a movement" value="keyboard"  (change)="changeMovement()">
+          <mat-radio-button value="mouse"> Mouse </mat-radio-button>
+          <mat-radio-button value="keyboard"> Keyboard </mat-radio-button>
+        </mat-radio-group>
+        
+      </section>
+
+      <section class="size-section">
+        <label>Snake lenght :</label>
+        <mat-slider [max]="50" [min]="5" [step]="5" [discrete]="true">
+          <input matSliderThumb [(ngModel)]="jointLength" #slider />
+        </mat-slider>
+      </section>
+    </mat-card-content>
+  </mat-card>
+
+  <canvas
+    id="snakeCanvas"
+    [attr.width]="boardWidth"
+    [attr.height]="boardHeight"
+    style="border: 1px solid #ccc"
+  ></canvas>
 </div>

@@ -13,8 +13,8 @@ import { SnakePComponent } from "../animals/snake-p/snake-p.component";
 export class BoardComponent {
 
 // To store the width and height of the board
-boardWidth: number = 0;
-boardHeight: number = 0;
+boardWidth: number = 800;
+boardHeight: number = 500;
 
 // Reference to the board element
 @ViewChild('board', { static: false }) boardElement!: ElementRef;

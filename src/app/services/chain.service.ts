@@ -4,88 +4,93 @@ import { UtilsService, Vector } from './utils.service';
 @Injectable({
   providedIn: 'root',
 })
-
 export class ChainService {
-  joints: Vector[] = [];
-  angles: number[] = [];
-  linkSize!: number;
-  angleConstraint!: number; // Max angle difference between adjacent joints
+  constructor(private utilService: UtilsService) {}
 
-  constructor(private utils: UtilsService) {
-    this.initChain(new Vector(0, 0), 0, 0, 2 * Math.PI);
-  }
+  updateMovement(
+    joints: { x: number; y: number; size: number }[] = [],
+    jointLength : number,
+    angles: number[] = [],
+    keyboardAngle: number,
+    mouseX: number,
+    mouseY: number,
+    isKeyboardMode: boolean,
+    moveSpeed: number
+  ): { x: number; y: number; size: number }[] {
+    const head = joints[0];
+    const maxAngle = Math.PI / 8; // Maximum angle (45m degrees)
 
-  /**
-   * Initializes the chain with an origin, joint count, link size, and optional angle constraint.
-   * @param origin Starting point of the chain.
-   * @param jointCount Number of joints in the chain.
-   * @param linkSize Space between joints.
-   * @param angleConstraint Maximum allowable angle difference (default is 2π).
-   */
-  initChain(origin: Vector, jointCount: number, linkSize: number, angleConstraint = 2 * Math.PI): void {
-    this.joints = [];
-    this.angles = [];
-    this.linkSize = linkSize;
-    this.angleConstraint = angleConstraint;
+    if (isKeyboardMode) {
+      // Keyboard mode: Move based on angle and keys
 
-    this.joints.push(origin.copy());
-    this.angles.push(0);
-    for (let i = 1; i < jointCount; i++) {
-      const newJoint = Vector.add(this.joints[i - 1], new Vector(0, this.linkSize));
-      this.joints.push(newJoint);
-      this.angles.push(0);
-    }
-  }
+      // this.angles[0] = this.utilService.constrainAngle(this.keyboardAngle, this.angles[0], maxAngle);
+      angles[0] = this.utilService.simplifyAngle(keyboardAngle);
+      angles[0] = this.utilService.constrainAngle(
+        angles[0],
+        angles[1],
+        maxAngle
+      );
 
-  /**
-   * Resolves the chain using the standard angle-based approach.
-   * @param pos Position to move the first joint to.
-   */
-  resolve(pos: Vector): void {
-    this.angles[0] = Vector.subtract(pos, this.joints[0]).heading();
-    this.joints[0] = pos;
+      head.x += Math.cos(angles[0]) * moveSpeed;
+      head.y += Math.sin(angles[0]) * moveSpeed;
+    } else {
 
-    for (let i = 1; i < this.joints.length; i++) {
-      const curAngle = Vector.subtract(this.joints[i - 1], this.joints[i]).heading();
-      this.angles[i] = this.utils.constrainAngle(curAngle, this.angles[i - 1], this.angleConstraint);
-      this.joints[i] = Vector.subtract(this.joints[i - 1], Vector.fromAngle(this.angles[i]).setMagnitude(this.linkSize));
-    }
-  }
+      const toolbarSize = this.utilService.gettoolbarSize();
+      // Mouse mode: Move towards mouse position
+      const targetX = mouseX;
+      const targetY = mouseY - toolbarSize.height;
 
-  /**
-   * Resolves the chain using the FABRIK algorithm.
-   * @param pos Position to move the first joint to (forward pass anchor).
-   * @param anchor Position to anchor the last joint (backward pass anchor).
-   */
-  fabrikResolve(pos: Vector, anchor: Vector): void {
-    // Forward pass
-    this.joints[0] = pos;
-    for (let i = 1; i < this.joints.length; i++) {
-      this.joints[i] = this.utils.constrainDistance(this.joints[i], this.joints[i - 1], this.linkSize);
+      // Calculate distance between the head and the target (mouse)
+      const dx = targetX - head.x;
+      const dy = targetY - head.y;
+      const distanceToTarget = Math.hypot(dx, dy);
+
+      // Define a threshold distance to stop the head from moving
+      const threshold = 100;
+
+      if (distanceToTarget > threshold) {
+        const targetAngle = Math.atan2(dy, dx);
+        angles[0] = this.utilService.constrainAngle(
+          targetAngle,
+          angles[1],
+          maxAngle
+        );
+
+        head.x += Math.cos(angles[0]) * 4; // Move head towards the limited angle
+        head.y += Math.sin(angles[0]) * 4;
+      }
     }
 
-    // Backward pass
-    this.joints[this.joints.length - 1] = anchor;
-    for (let i = this.joints.length - 2; i >= 0; i--) {
-      this.joints[i] = this.utils.constrainDistance(this.joints[i], this.joints[i + 1], this.linkSize);
-    }
-  }
+    // Update remaining joints
+    for (let i = 1; i < joints.length; i++) {
+      const prevJoint = joints[i - 1];
+      const currentJoint = joints[i];
 
-  /**
-   * Displays the chain visually.
-   * (Placeholder: Replace this with your Angular rendering logic.)
-   */
-  display(): void {
-    console.log('Rendering chain:');
-    for (let i = 0; i < this.joints.length - 1; i++) {
-      const startJoint = this.joints[i];
-      const endJoint = this.joints[i + 1];
-      console.log(`Line from (${startJoint.x}, ${startJoint.y}) to (${endJoint.x}, ${endJoint.y})`);
+      const distance = Math.hypot(
+        prevJoint.x - currentJoint.x,
+        prevJoint.y - currentJoint.y
+      );
+
+      if (distance > jointLength) {
+        const angle = Math.atan2(
+          prevJoint.y - currentJoint.y,
+          prevJoint.x - currentJoint.x
+        );
+
+        // this.angles[i] = angle;
+        angles[i] = this.utilService.constrainAngle(
+          angle,
+          angles[i - 1],
+          maxAngle
+        );
+
+        currentJoint.x =
+          prevJoint.x - Math.cos(angles[i]) * jointLength;
+        currentJoint.y =
+          prevJoint.y - Math.sin(angles[i]) * jointLength;
+      }
     }
 
-    console.log('Joints:');
-    for (const joint of this.joints) {
-      console.log(`Joint at (${joint.x}, ${joint.y})`);
-    }
+    return joints;
   }
 }

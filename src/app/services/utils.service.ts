@@ -4,7 +4,39 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class UtilsService {
+
+  boardHeight: number = 0;
+  boardWidth: number = 0;
+
+ // To store the width and height of the toolbar
+  toolbarWidth: number = 0;
+  toolbarHeight: number = 0;
+
+
+
+
+
+
   constructor() {}
+
+  updateBoardSize(boardWidth: number, boardHeight: number) {
+    this.boardWidth = boardWidth;
+    this.boardHeight = boardHeight;
+  }
+
+  updatetoolbarSize(toolbarWidth: number, toolbarHeight: number) {
+    this.toolbarWidth = toolbarWidth;
+    this.toolbarHeight = toolbarHeight;
+  }
+
+  
+  gettoolbarSize() {
+    return { width: this.toolbarWidth, height: this.toolbarHeight };
+  }
+
+  getBoardSize() {
+    return { width: this.boardWidth, height: this.boardHeight };
+  }
 
   /**
    * Constrain a vector to be at a certain range from the anchor.

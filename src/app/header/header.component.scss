@@ -6,7 +6,8 @@
     align-items:center;
     padding: 1rem;
     text-align: center;
-    height: 100%;
+    width: 100%;
+    height: auto;
     
   
     /* Box shadow for a clean, elevated look */
@@ -37,10 +38,10 @@
   
     a {
       font-size: 1rem;
+      margin: auto;
       text-transform: uppercase;
       font-weight: bold;
-      width: 10rem;
-      height: 5rem;
+      width: 7rem;
       border-radius: 20px;
   
       /* Add hover and focus effects */
@@ -48,4 +49,14 @@
     }
 }
    
+
+.btn{
+  // margin-top: -0.1rem;
+  // margin: -0.1rem 0 -0.3rem -0.3rem;
+  // margin : -0.1rem 0 -0.3rem -0.3rem;
+  margin-top:-0.1rem ;
+  margin-left: -0.3rem;
+  margin-right: -0.3rem;
+  
+}
   

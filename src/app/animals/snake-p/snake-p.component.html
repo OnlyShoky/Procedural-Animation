@@ -4,7 +4,7 @@
   [style.height.px]="boardHeight"
   (mousemove)="onMouseMove($event)"
 >
-  <div class="snake-info">
+  <!-- <div class="snake-info">
     <p>snake position:</p>
     <p>X: {{ this.mouseX | number : "1.0-2" }} px</p>
     <p>Y: {{ this.mouseY | number : "1.0-2" }} px</p>
@@ -12,7 +12,7 @@
     <p>Y: {{ this.boardHeight | number : "1.0-2" }} px</p>
     <p> Keyboard angle : {{ this.keyboardAngle | number : "1.0-2" }}</p>
     <p> Snake angle : {{ this.angles[0] | number : "1.0-2" }}</p>
-  </div>
+  </div> -->
 
   <div class = "snake-parameters-container">
   <mat-card class="snake-parameters">
@@ -29,9 +29,18 @@
 
       <section>
         <label>Movement :</label>
-        <mat-radio-group color="accent" aria-label="Select a movement" value="keyboard"  (change)="changeMovement()">
+        <mat-radio-group color="accent" aria-label="Select a movement" value="keyboard"  (change)="toggleMovement()">
           <mat-radio-button value="mouse"> Mouse </mat-radio-button>
           <mat-radio-button value="keyboard"> Keyboard </mat-radio-button>
+        </mat-radio-group>
+        
+      </section>
+
+      <section>
+        <label>Visual :</label>
+        <mat-radio-group color="accent" aria-label="Select a movement" value="snake"  (change)="toggleVisual()">
+          <mat-radio-button value="snake"> Snake </mat-radio-button>
+          <mat-radio-button value="chain"> Chain </mat-radio-button>
         </mat-radio-group>
         
       </section>
@@ -48,7 +57,7 @@
 
   <ng-container *ngIf="isKeyboardMode">
   <mat-card class="snake-controls">
-    <label style ="align-self: center; margin: 1rem;"> ('M' for toggle)</label>
+    <label style ="align-self: center; margin: 1rem;"> ('m' for toggle)</label>
     
     <mat-card-content>
       <div class="arrow-buttons">
@@ -92,10 +101,6 @@
 </ng-container>
 </div>
 
-
-
-
-        
 
   <canvas
     id="snakeCanvas"

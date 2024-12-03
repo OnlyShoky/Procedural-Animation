@@ -1,4 +1,7 @@
-<mat-toolbar class="header-toolbar" color="primary">
+<div #toolbar>
+
+<mat-toolbar class="header-toolbar"  color="primary">
+
     <!-- Title Section -->
     <!-- Navigation Links -->
     <div class="header-links">
@@ -10,6 +13,33 @@
 
     <div class="header-title">
         <h1>Procedural Animation</h1>
+        <div class="footer-contact">
+          <p>
+            Feel free to
+            <a
+              mat-button
+              href="mailto:mohamed.elmoag@gmail.com?subject=Contact&body=Hello Mohamed,"
+              class="btn"
+            >
+              <i class="fa-solid fa-envelope"></i>
+              Send Email
+            </a>
+            or visite my
+            <a
+              mat-button
+              href="https://mohamed-elmourabit.netlify.app"
+              target="_blank"
+              class="btn"
+            >
+              <i class="fa-solid fa-id-card"></i> Portfolio</a
+            >
+          </p>
+        </div>
       </div>
+
   </mat-toolbar>
+
+</div>
+
+
   

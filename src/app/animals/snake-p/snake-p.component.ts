@@ -13,22 +13,31 @@ import { MatSliderModule } from '@angular/material/slider';
 import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { UtilsService } from '../../services/utils.service';
-import {MatIconModule} from '@angular/material/icon'; 
+import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { ChainService } from '../../services/chain.service';
 @Component({
   selector: 'app-snake-p',
   standalone: true,
-  imports: [CommonModule, MatCardModule, MatRadioModule, MatSliderModule, FormsModule, MatInputModule,MatIconModule , MatButtonModule],
+  imports: [
+    CommonModule,
+    MatCardModule,
+    MatRadioModule,
+    MatSliderModule,
+    FormsModule,
+    MatInputModule,
+    MatIconModule,
+    MatButtonModule,
+  ],
   templateUrl: './snake-p.component.html',
-  styleUrl: './snake-p.component.scss'
+  styleUrl: './snake-p.component.scss',
 })
-
 export class SnakePComponent implements OnInit, OnDestroy {
   @Input() boardWidth: number = 800;
   @Input() boardHeight: number = 600;
 
   // Snake logic
-  joints: { x: number; y: number, size: number }[] = [];
+  joints: { x: number; y: number; size: number }[] = [];
   angles: number[] = [];
   chainLength = 48; // Number of joints in the snake
   jointLength = 32; // Distance between each joint
@@ -39,34 +48,30 @@ export class SnakePComponent implements OnInit, OnDestroy {
   animationFrameId: any;
   isBrowser: boolean = false;
 
-
   //Snake art
-  colors: { body: string, outline: string, eyes: string } = { body: '#d7e3ff', outline: '#d7e3ff', eyes: '#005cbb' };
+  colors: { body: string; outline: string; eyes: string } = {
+    body: '#d7e3ff',
+    outline: '#d7e3ff',
+    eyes: '#005cbb',
+  };
   choosedColor: string = 'Cobra';
-  constructor(@Inject(PLATFORM_ID) private platformId: Object, private utilService : UtilsService) { }
-
-  // Add key to the set on mousedown or keydown
-  onKeyPress(key: string): void {
-    this.pressedKeys.add(key);
-  }
-
-  // Remove key from the set on mouseup or keyup
-  onKeyRelease(key: string): void {
-    this.pressedKeys.delete(key);
-  }
+  constructor(
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private utilService: UtilsService,
+    private chainService: ChainService
+  ) { }
+  isChainVisible: boolean = false;
 
   //Keyboard input handling:
   isKeyboardMode: boolean = true; // Toggle between mouse and keyboard modes
   moveSpeed: number = 0; // Initial speed
   keyboardAngle: number = 0; // Current angle for keyboard mode
   pressedKeys: Set<string> = new Set(); // Track currently pressed keys
-  ArrowLeft : boolean = false;
-  ArrowRight : boolean = false;
-  ArrowUp : boolean = false;
-
+  ArrowLeft: boolean = false;
+  ArrowRight: boolean = false;
+  ArrowUp: boolean = false;
 
   ngOnInit(): void {
-
     this.initializeSnake();
 
     // Check if running in the browser
@@ -82,13 +87,10 @@ export class SnakePComponent implements OnInit, OnDestroy {
   handleKeyDown(event: KeyboardEvent): void {
     this.pressedKeys.add(event.key); // Track pressed keys
 
-
     // Toggle between modes
     if (event.key === 'm') {
       this.isKeyboardMode = !this.isKeyboardMode;
     }
-
-
   }
 
   moveSnake() {
@@ -97,27 +99,24 @@ export class SnakePComponent implements OnInit, OnDestroy {
     if (this.isKeyboardMode) {
       // Handle keyboard-based movement
 
-        
-      
-      if (this.pressedKeys.has('ArrowLeft')) {
+      if (this.pressedKeys.has('ArrowLeft') && this.moveSpeed > 0) {
         this.keyboardAngle -= angleStep; // Adjust angle to turn left
       }
 
-      if (this.pressedKeys.has('ArrowRight')) {
+      if (this.pressedKeys.has('ArrowRight') && this.moveSpeed > 0) {
         this.keyboardAngle += angleStep; // Adjust angle to turn right
       }
 
-      if( Math.abs(this.keyboardAngle - this.angles[0]) > 0.5){ // If angle is not close to 0, allow rotation
+      if (Math.abs(this.keyboardAngle - this.angles[0]) > 0.5) {
+        // If angle is not close to 0, allow rotation
         this.keyboardAngle = this.angles[0];
       }
 
-    
       if (this.pressedKeys.has('ArrowUp')) {
         this.moveSpeed = 4; // Move forward
       } else {
         this.moveSpeed = 0; // Stop if ArrowUp is not pressed
       }
-
     }
   }
 
@@ -158,9 +157,12 @@ export class SnakePComponent implements OnInit, OnDestroy {
     }
   }
 
-  changeMovement(): void {
+  toggleMovement(): void {
     this.isKeyboardMode = !this.isKeyboardMode;
+  }
 
+  toggleVisual(): void {
+    this.isChainVisible = !this.isChainVisible;
   }
 
   ngOnDestroy(): void {
@@ -173,91 +175,41 @@ export class SnakePComponent implements OnInit, OnDestroy {
     const startX = this.boardWidth / 2;
     const startY = this.boardHeight / 2;
 
-
-
     for (let i = 0; i < this.chainLength; i++) {
-      this.joints.push({ x: startX - i * this.jointLength, y: startY, size: this.getBodyWidth(i) });
+      this.joints.push({
+        x: startX - i * this.jointLength,
+        y: startY,
+        size: this.getBodyWidth(i),
+      });
       this.angles.push(0); // Default angle
     }
   }
 
   startAnimation(): void {
+
     const animate = () => {
       this.moveSnake();
       this.updateSnake();
-      this.drawSnake();
+      if (this.isChainVisible) this.drawChain();
+      else this.drawSnake();
+
       this.animationFrameId = requestAnimationFrame(animate);
     };
     animate();
   }
 
   updateSnake(): void {
-    const head = this.joints[0];
-    const maxAngle = Math.PI / 8; // Maximum angle (45m degrees)
-  
-    if (this.isKeyboardMode) {
-      // Keyboard mode: Move based on angle and keys
-      const moveSpeed = this.moveSpeed; // Speed of the snake's movement
-
-      
-      // this.angles[0] = this.utilService.constrainAngle(this.keyboardAngle, this.angles[0], maxAngle);
-      this.angles[0] = this.utilService.simplifyAngle(this.keyboardAngle);
-      this.angles[0] = this.utilService.constrainAngle( this.angles[0], this.angles[1], maxAngle);
-
-      head.x += Math.cos(this.angles[0]) * moveSpeed;
-      head.y += Math.sin(this.angles[0]) * moveSpeed;
-    
-    } else {
-      // Mouse mode: Move towards mouse position
-      const targetX = this.mouseX;
-      const targetY = this.mouseY - 170;
-  
-      // Calculate distance between the head and the target (mouse)
-      const dx = targetX - head.x;
-      const dy = targetY - head.y;
-      const distanceToTarget = Math.hypot(dx, dy);
-  
-      // Define a threshold distance to stop the head from moving
-      const threshold = 50;
-  
-      if (distanceToTarget > threshold) {
-        const targetAngle = Math.atan2(dy, dx);
-        this.angles[0] = this.utilService.constrainAngle(targetAngle, this.angles[1], maxAngle);
-  
-        head.x += Math.cos(this.angles[0]) * 4; // Move head towards the limited angle
-        head.y += Math.sin(this.angles[0]) * 4;
-      }
-    }
-  
-    // Update remaining joints
-    for (let i = 1; i < this.joints.length; i++) {
-      const prevJoint = this.joints[i - 1];
-      const currentJoint = this.joints[i];
-  
-      const distance = Math.hypot(
-        prevJoint.x - currentJoint.x,
-        prevJoint.y - currentJoint.y
-      );
-  
-      if (distance > this.jointLength) {
-        const angle = Math.atan2(
-          prevJoint.y - currentJoint.y,
-          prevJoint.x - currentJoint.x
-        );
-
-        // this.angles[i] = angle;
-        this.angles[i] = this.utilService.constrainAngle(angle, this.angles[i-1], maxAngle);
-  
-        currentJoint.x =
-          prevJoint.x - Math.cos(this.angles[i]) * this.jointLength;
-        currentJoint.y =
-          prevJoint.y - Math.sin(this.angles[i]) * this.jointLength;
-          
-        
-      }
-    }
+    this.joints = this.chainService.updateMovement(
+      this.joints,
+      this.jointLength,
+      this.angles,
+      this.keyboardAngle,
+      this.mouseX,
+      this.mouseY,
+      this.isKeyboardMode,
+      this.moveSpeed
+    );
   }
-  
 
   drawSnake(): void {
     const canvas = document.getElementById('snakeCanvas') as HTMLCanvasElement;
@@ -272,8 +224,6 @@ export class SnakePComponent implements OnInit, OnDestroy {
     ctx.fillStyle = this.colors.body; // Snake body color
     ctx.strokeStyle = this.colors.outline; // Snake outline
     ctx.lineWidth = 2;
-
-
 
     // Draw right half
     for (let i = 0; i < this.joints.length; i++) {
@@ -307,32 +257,19 @@ export class SnakePComponent implements OnInit, OnDestroy {
       ctx.lineTo(x, y);
     }
 
-
     // Top of head
     const head = this.joints[0];
     let angle = this.angles[0] || 0;
     let width = this.getBodyWidth(0);
-    ctx.arc(
-      head.x,
-      head.y,
-      width,
-      angle - Math.PI / 6,
-      angle + Math.PI / 6
-    );
-
-
-
+    ctx.arc(head.x, head.y, width, angle - Math.PI / 6, angle + Math.PI / 6);
 
     ctx.closePath();
     ctx.fill();
     ctx.stroke();
 
-
-
-
     // Draw eyes
 
-    const eyeSize = 15
+    const eyeSize = 15;
     const eyeOffset = width - eyeSize - 10;
 
     ctx.fillStyle = this.colors.eyes;
@@ -355,6 +292,65 @@ export class SnakePComponent implements OnInit, OnDestroy {
       Math.PI * 2
     );
     ctx.fill();
+  }
+
+  drawChain(): void {
+    const canvas = document.getElementById('snakeCanvas') as HTMLCanvasElement;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Draw snake body
+    ctx.beginPath();
+    ctx.fillStyle = this.colors.body; // Snake body color
+    ctx.strokeStyle = this.colors.outline; // Snake outline
+    ctx.lineWidth = 5;
+
+    // Draw right half
+    for (let i = 0; i < this.joints.length; i++) {
+      const angle = this.angles[i] || 0;
+      const joint = this.joints[i];
+      const x = joint.x + Math.cos(angle + Math.PI / 2) * 2;
+      const y = joint.y + Math.sin(angle + Math.PI / 2) * 2;
+      ctx.lineTo(x, y);
+    }
+
+    // Draw left half (reversed)
+    for (let i = this.joints.length - 1; i >= 0; i--) {
+      const angle = this.angles[i] || 0;
+      const joint = this.joints[i];
+      const x = joint.x + Math.cos(angle - Math.PI / 2) * 2;
+      const y = joint.y + Math.sin(angle - Math.PI / 2) * 2;
+      ctx.lineTo(x, y);
+    }
+
+    ctx.closePath();
+    ctx.fill();
+    ctx.stroke();
+
+    for (let i = 0; i < this.joints.length; i++) {
+      ctx.beginPath();
+      ctx.fillStyle = this.colors.body; // Snake body color
+
+      ctx.lineWidth = 2;
+      const joint = this.joints[i];
+      const x = joint.x;
+      const y = joint.y;
+      ctx.arc(x, y, 13, 0, Math.PI * 2);
+      ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.fillStyle = 'white'; // Snake body color
+      ctx.lineWidth = 2;
+      ctx.arc(x, y, 10, 0, Math.PI * 2);
+      ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
+    }
   }
 
   getBodyWidth(index: number): number {

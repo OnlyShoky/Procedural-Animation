@@ -13,10 +13,12 @@ import { MatSliderModule } from '@angular/material/slider';
 import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { UtilsService } from '../../services/utils.service';
+import {MatIconModule} from '@angular/material/icon'; 
+import { MatButtonModule } from '@angular/material/button';
 @Component({
   selector: 'app-snake-p',
   standalone: true,
-  imports: [CommonModule, MatCardModule, MatRadioModule, MatSliderModule, FormsModule, MatInputModule],
+  imports: [CommonModule, MatCardModule, MatRadioModule, MatSliderModule, FormsModule, MatInputModule,MatIconModule , MatButtonModule],
   templateUrl: './snake-p.component.html',
   styleUrl: './snake-p.component.scss'
 })
@@ -39,15 +41,28 @@ export class SnakePComponent implements OnInit, OnDestroy {
 
 
   //Snake art
-  colors: { body: string, outline: string, eyes: string } = { body: '#005cbb', outline: '#d7e3ff', eyes: '#d7e3ff' };
+  colors: { body: string, outline: string, eyes: string } = { body: '#d7e3ff', outline: '#d7e3ff', eyes: '#005cbb' };
   choosedColor: string = 'Cobra';
   constructor(@Inject(PLATFORM_ID) private platformId: Object, private utilService : UtilsService) { }
+
+  // Add key to the set on mousedown or keydown
+  onKeyPress(key: string): void {
+    this.pressedKeys.add(key);
+  }
+
+  // Remove key from the set on mouseup or keyup
+  onKeyRelease(key: string): void {
+    this.pressedKeys.delete(key);
+  }
 
   //Keyboard input handling:
   isKeyboardMode: boolean = true; // Toggle between mouse and keyboard modes
   moveSpeed: number = 0; // Initial speed
   keyboardAngle: number = 0; // Current angle for keyboard mode
   pressedKeys: Set<string> = new Set(); // Track currently pressed keys
+  ArrowLeft : boolean = false;
+  ArrowRight : boolean = false;
+  ArrowUp : boolean = false;
 
 
   ngOnInit(): void {
@@ -131,13 +146,13 @@ export class SnakePComponent implements OnInit, OnDestroy {
         break;
       case 'Cobra':
         this.colors.body = '#d7e3ff';
-        this.colors.outline = '#005cbb';
+        this.colors.outline = '#d7e3ff';
         this.colors.eyes = '#005cbb';
         break;
 
       default:
         this.colors.body = '#d7e3ff';
-        this.colors.outline = '#005cbb';
+        this.colors.outline = '#d7e3ff';
         this.colors.eyes = '#005cbb';
         break;
     }

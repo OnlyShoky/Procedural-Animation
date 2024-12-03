@@ -1,0 +1,154 @@
+@use 'sass:map';
+// Color palettes from the Material Design spec.
+// See https://material.io/design/color/
+//
+// Contrast colors are hard-coded because it is too difficult (probably impossible) to
+// calculate them. These contrast colors are pulled from the public Material Design spec swatches.
+// While the contrast colors in the spec are not prescriptive, we use them for convenience.
+
+
+// @deprecated renamed to $dark-primary-text.
+// @breaking-change 8.0.0
+$black-87-opacity: rgba(black, 0.87);
+// @deprecated renamed to $light-primary-text.
+// @breaking-change 8.0.0
+$white-87-opacity: rgba(white, 0.87);
+// @deprecated use $dark-[secondary-text,disabled-text,dividers,focused] instead.
+// @breaking-change 8.0.0
+$black-12-opacity: rgba(black, 0.12);
+// @deprecated use $light-[secondary-text,disabled-text,dividers,focused] instead.
+// @breaking-change 8.0.0
+$white-12-opacity: rgba(white, 0.12);
+// @deprecated use $dark-[secondary-text,disabled-text,dividers,focused] instead.
+// @breaking-change 8.0.0
+$black-6-opacity: rgba(black, 0.06);
+// @deprecated use $light-[secondary-text,disabled-text,dividers,focused] instead.
+// @breaking-change 8.0.0
+$white-6-opacity: rgba(white, 0.06);
+
+$dark-primary-text: rgba(black, 0.87);
+$dark-secondary-text: rgba(black, 0.54);
+$dark-disabled-text: rgba(black, 0.38);
+$dark-dividers: rgba(black, 0.12);
+$dark-focused: rgba(black, 0.12);
+$light-primary-text: white;
+$light-secondary-text: rgba(white, 0.7);
+$light-disabled-text: rgba(white, 0.5);
+$light-dividers: rgba(white, 0.12);
+$light-focused: rgba(white, 0.12);
+
+
+$azure-dark-text: rgba(0, 92, 187, 1);
+$azure-darker-text: rgba(0, 0, 110, 1);
+$azure-light-text: rgba(171, 199, 255, 1);
+
+
+
+
+$azure-palette: (
+  50: #f0faff,
+  100: #d7e3ff,
+  200: #abc7ff,
+  300: #7cabff,º
+  400: #438fff,
+  500: #0074e9,
+  600: #005cbb,
+  700: #0050a5,
+  800: #003a7a,
+  900: #001F3F,
+  A100: #f9f9ff,
+  A200: #ecf0ff,
+  A400: #b0d8ff,
+  A700: #90caf9,
+  contrast: (
+    50: $azure-dark-text,
+    100: $azure-dark-text,
+    200: $azure-darker-text,
+    300: $azure-darker-text,
+    400: $azure-darker-text,
+    500: $azure-light-text,
+    600: $azure-light-text,
+    700: $azure-light-text,
+    800: $azure-light-text,
+    900: $azure-light-text,
+    A100: $azure-dark-text,
+    A200: $azure-light-text,
+    A400: $azure-light-text,
+    A700: $azure-light-text,
+  )
+);
+
+$sage-dark-text: rgba(62, 77, 52, 1); // Example for dark text
+$sage-darker-text: rgba(18, 55, 42, 1); // Example for darker text
+$sage-light-text: rgba(211, 236, 188, 1); // Example for light text
+
+$sage-palette: (
+  50: #f3f9f0,         // Lightest shade
+  100: #d3ecbc,       // Provided color
+  200: #cfe1b9,       // Provided color
+  300: #b5c99a,       // Provided color
+  400: #97a97c,       // Provided color
+  500: #87986a,       // Provided color
+  600: #87986a,       // Darker shade
+  700: #718355,       // Darker shade
+  800: #2f5c2e,       // Darker shade
+  900: #163020,       // Darker shade
+  A100: #f9f9f0,      // Light accent shade
+  A200: #ecf0f0,      // Light accent shade
+  A400: #c7e6b4,      // Medium accent shade
+  A700: #a4d6a0,      // Medium accent shade
+  contrast: (
+    50: $sage-dark-text,
+    100: $sage-dark-text,
+    200: $sage-darker-text,
+    300: $sage-darker-text,
+    400: $sage-darker-text,
+    500: $sage-light-text,
+    600: $sage-light-text,
+    700: $sage-light-text,
+    800: $sage-light-text,
+    900: $sage-light-text,
+    A100: $sage-dark-text,
+    A200: $sage-light-text,
+    A400: $sage-light-text,
+    A700: $sage-light-text,
+  )
+);
+
+$gold-dark-text: rgba(50, 50, 50, 1); // Example for dark text
+$gold-darker-text: rgba(30, 30, 30, 1); // Example for darker text
+$gold-light-text: rgba(255, 228, 196, 1); // Example for light text
+$gold-palette: (
+  50: #fff8e1,         // Very light gold
+  100: #ffe169,       // Light gold
+  200: #fad643,       // Medium light gold
+  300: #edc531,       // Soft gold
+  400: #dbb42c,       // Bright gold
+  500: #c9a227,       // Rich gold
+  600: #b69121,       // Darker gold
+  700: #ffa000,       // Medium dark gold
+  800: #ff8f00,       // Dark gold
+  900: #ff6f00,       // Deep gold
+  A100: #ffe57f,      // Light accent gold
+  A200: #ffd740,      // Bright accent gold
+  A400: #ffc400,      // Medium bright gold
+  A700: #ffab00,      // Dark accent gold
+  contrast: (
+    50: $gold-dark-text,
+    100: $gold-dark-text,
+    200: $gold-darker-text,
+    300: $gold-darker-text,
+    400: $gold-darker-text,
+    500: $gold-light-text,
+    600: $gold-light-text,
+    700: $gold-light-text,
+    800: $gold-light-text,
+    900: $gold-light-text,
+    A100: $gold-dark-text,
+    A200: $gold-light-text,
+    A400: $gold-light-text,
+    A700: $gold-light-text,
+  )
+);
+
+

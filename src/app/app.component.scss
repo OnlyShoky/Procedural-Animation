@@ -1,0 +1,29 @@
+/* Main container occupying the full viewport */
+.container {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column; /* Stack the header and board vertically */
+    overflow: hidden;
+  }
+  
+  /* Header with a fixed height */
+  .header {
+    height: 150px; /* Set the height of the header */
+    flex-shrink: 0; /* Prevent the header from shrinking */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+  }
+  
+  /* Board takes up remaining space */
+  .board {
+    flex: 1; /* Let the board take the remaining space */
+    overflow-y: hidden; /* Enable vertical scrolling if needed */
+    background-color: #f1f1f1; /* Example background color */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+  }

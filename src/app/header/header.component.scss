@@ -1,8 +1,51 @@
-.header {
+/* General styles for the header */
+.header-toolbar {
+    display: flex;
+    flex-direction: line;
+    justify-content: space-between;
+    align-items:center;
+    padding: 1rem;
     text-align: center;
-    padding: 20px;
-    background-color: #2e3b4e;
-    color: white;
-    font-family: Arial, sans-serif;
+    height: 100%;
+    
+  
+    /* Box shadow for a clean, elevated look */
+    // box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   }
+  
+  .header-title {
+    
+  
+    h1 {
+      margin: 0;
+      font-size: 2rem;
+      font-weight: bold;
+    }
+  
+    p {
+      margin: 0.5rem 0 1rem;
+      font-size: 1rem;
+      opacity: 0.8;
+    }
+  }
+  
+  /* Styles for the navigation links */
+  .header-links {
+    display: flex;
+    align-self: flex-end;
+    gap: 2rem;
+  
+    a {
+      font-size: 1rem;
+      text-transform: uppercase;
+      font-weight: bold;
+      width: 10rem;
+      height: 5rem;
+      border-radius: 20px;
+  
+      /* Add hover and focus effects */
+     
+    }
+}
+   
   

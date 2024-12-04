@@ -8,8 +8,6 @@ export const routes: Routes = [
     { path: 'fish', component: FishComponent  },
     { path: 'lizard',component: LizardComponent },
 
-
-
     { path: '', redirectTo: '', pathMatch: 'full' },
     { path: '**', redirectTo: '' },
 ];

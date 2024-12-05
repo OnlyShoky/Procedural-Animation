@@ -15,7 +15,8 @@ export class ChainService {
     mouseX: number,
     mouseY: number,
     isKeyboardMode: boolean,
-    moveSpeed: number
+    moveSpeed: number,
+    snakeSpeed: number
   ): { x: number; y: number; size: number }[] {
     const head = joints[0];
     const maxAngle = Math.PI / 8; // Maximum angle (45m degrees)
@@ -56,8 +57,8 @@ export class ChainService {
           maxAngle
         );
 
-        head.x += Math.cos(angles[0]) * 4; // Move head towards the limited angle
-        head.y += Math.sin(angles[0]) * 4;
+        head.x += Math.cos(angles[0]) * snakeSpeed; // Move head towards the limited angle
+        head.y += Math.sin(angles[0]) * snakeSpeed;
       }
     }
 

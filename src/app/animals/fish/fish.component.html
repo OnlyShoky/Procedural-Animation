@@ -1,1 +1,91 @@
-<p>fish works!</p>
+<div class="board" [style.width.px]="boardWidth" [style.height.px]="boardHeight" (mousemove)="onMouseMove($event)">
+
+
+    <div class="fish-parameters-container">
+        <mat-card class="fish-parameters">
+            <mat-card-content>
+                <section>
+                    <label>Colors :</label>
+                    <mat-radio-group color="accent" aria-label="Select a color" [(ngModel)]="choosedColor"
+                        (change)="onColorChange()">
+                        <mat-radio-button value="Cobra"> Cobra </mat-radio-button>
+                        <mat-radio-button value="Python"> Python </mat-radio-button>
+                        <mat-radio-button value="BlackMamba"> Black Mamba </mat-radio-button>
+                    </mat-radio-group>
+
+                </section>
+
+                <section>
+                    <label>Movement :</label>
+                    <mat-radio-group color="accent" aria-label="Select a movement" value="keyboard"
+                        (change)="toggleMovement()">
+                        <mat-radio-button value="mouse"> Mouse </mat-radio-button>
+                        <mat-radio-button value="keyboard"> Keyboard </mat-radio-button>
+                    </mat-radio-group>
+
+                </section>
+
+                <section>
+                    <label>Visual :</label>
+                    <mat-radio-group color="accent" aria-label="Select a movement" value="fish"
+                        (change)="toggleVisual()">
+                        <mat-radio-button value="fish"> Fish </mat-radio-button>
+                        <mat-radio-button value="chain"> Chain </mat-radio-button>
+                    </mat-radio-group>
+
+                </section>
+
+                <section class="size-section">
+                    <label>Fish lenght :</label>
+                    <mat-slider color="accent" [max]="100" [min]="5" [step]="5" [discrete]="true">
+                        <input matSliderThumb [(ngModel)]="jointLength" #slider />
+                    </mat-slider>
+                </section>
+
+                <section class="size-section">
+                    <label>Fish Speed :</label>
+                    <mat-slider color="accent" [max]="20" [min]="1" [step]="2" [discrete]="true">
+                        <input matSliderThumb [(ngModel)]="fishSpeed" #slider />
+                    </mat-slider>
+                </section>
+            </mat-card-content>
+
+        </mat-card>
+
+        <ng-container *ngIf="isKeyboardMode">
+            <mat-card class="fish-controls">
+                <label style="align-self: center; margin: 1rem;"> ('m' for toggle)</label>
+
+                <mat-card-content>
+                    <div class="arrow-buttons">
+                        <!-- Left Arrow Button -->
+                        <button mat-mini-fab color="primary" [class.active]="this.pressedKeys.has('ArrowLeft')"
+                            (mousedown)="this.pressedKeys.add('ArrowLeft')"
+                            (mouseup)="this.pressedKeys.delete('ArrowLeft')">
+                            <mat-icon>arrow_back</mat-icon>
+                        </button>
+
+                        <!-- Up Arrow Button -->
+                        <button mat-mini-fab color="primary" [class.active]="this.pressedKeys.has('ArrowUp')"
+                            (mousedown)="this.pressedKeys.add('ArrowUp')"
+                            (mouseup)="this.pressedKeys.delete('ArrowUp')">
+                            <mat-icon>arrow_upward</mat-icon>
+                        </button>
+
+                        <!-- Right Arrow Button -->
+                        <button mat-mini-fab color="primary" [class.active]="this.pressedKeys.has('ArrowRight')"
+                            (mousedown)="this.pressedKeys.add('ArrowRight')"
+                            (mouseup)="this.pressedKeys.delete('ArrowRight')">
+                            <mat-icon>arrow_forward</mat-icon>
+                        </button>
+                    </div>
+
+
+                </mat-card-content>
+            </mat-card>
+        </ng-container>
+    </div>
+
+
+    <canvas id="fishCanvas" [attr.width]="boardWidth" [attr.height]="boardHeight"></canvas>
+</div>

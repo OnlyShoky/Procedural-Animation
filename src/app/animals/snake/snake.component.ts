@@ -49,6 +49,8 @@ export class SnakeComponent implements OnInit, OnDestroy {
   animationFrameId: any;
   isBrowser: boolean = false;
 
+  snakeSpeed: number = 4;
+
   //Snake art
   colors: { body: string; outline: string; eyes: string } = {
     body: '#d7e3ff',
@@ -114,7 +116,7 @@ export class SnakeComponent implements OnInit, OnDestroy {
       }
 
       if (this.pressedKeys.has('ArrowUp')) {
-        this.moveSpeed = 4; // Move forward
+        this.moveSpeed = this.snakeSpeed; // Move forward
       } else {
         this.moveSpeed = 0; // Stop if ArrowUp is not pressed
       }
@@ -211,7 +213,8 @@ export class SnakeComponent implements OnInit, OnDestroy {
       this.mouseX,
       this.mouseY,
       this.isKeyboardMode,
-      this.moveSpeed
+      this.moveSpeed,
+      this.snakeSpeed
     );
   }
 

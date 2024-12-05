@@ -1,7 +1,5 @@
 import { Component, ElementRef, HostListener, Inject, Output, PLATFORM_ID, ViewChild } from '@angular/core';
-import { SnakeComponent } from "../animals/snake/snake.component";
 import { isPlatformBrowser } from '@angular/common';
-import { SnakePComponent } from "../animals/snake-p/snake-p.component";
 import { RouterOutlet } from '@angular/router';
 import { UtilsService } from '../services/utils.service';
 

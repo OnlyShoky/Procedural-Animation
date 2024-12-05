@@ -1,0 +1,70 @@
+.board {
+  position: relative;
+  overflow: hidden;
+}
+
+.fish-info {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background-color: rgba(26, 145, 50, 0.5);
+  color: white;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.fish-parameters-container {
+  display: flex;
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+}
+
+.fish-controls {
+  background-color: rgb(253, 251, 255);
+  // border : 2px solid black;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 1px -1px,
+    rgba(0, 0, 0, 0.14) 0px 1px 1px 0px, rgba(0, 0, 0, 0.12) 0px 1px 3px 0px;
+  color: rgb(26, 27, 31);
+  border-radius: 20px;
+  padding: 5px;
+  border-radius: 5px;
+  border-top-style: solid;
+  border-right-width: 0px;
+  border-right-style: solid;
+  border-left-width: 0px;
+  border-left-style: solid;
+  align-self: center;
+}
+
+.fish-parameters {
+  background-color: rgb(253, 251, 255);
+  // border : 2px solid black;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 1px -1px,
+    rgba(0, 0, 0, 0.14) 0px 1px 1px 0px, rgba(0, 0, 0, 0.12) 0px 1px 3px 0px;
+  color: rgb(26, 27, 31);
+  border-radius: 20px;
+  padding: 5px;
+  border-radius: 5px;
+  border-top-style: solid;
+  border-right-width: 0px;
+  border-right-style: solid;
+  border-left-width: 0px;
+  border-left-style: solid;
+  margin: 1rem;
+}
+
+/* Centering and layout for the arrow buttons */
+.arrow-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+button.active {
+  background-color: #abc7ff; /* Keep the natural Material Design color */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Add a shadow for the active state */
+  transform: scale(1.1); /* Slight scale effect */
+  transition: background-color 0.2s, transform 0.2s; /* Smooth transitions */
+}

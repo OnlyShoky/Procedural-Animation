@@ -75,7 +75,7 @@ export class UtilsService {
    * @param anchor Anchor angle (in radians).
    * @returns The relative angle difference.
    */
-  private relativeAngleDiff(angle: number, anchor: number): number {
+  relativeAngleDiff(angle: number, anchor: number): number {
     angle = this.simplifyAngle(angle + Math.PI - anchor);
     anchor = Math.PI;
     return anchor - angle;
@@ -96,6 +96,8 @@ export class UtilsService {
     }
     return angle;
   }
+
+  
 }
 
 /**

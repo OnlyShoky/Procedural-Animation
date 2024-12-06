@@ -8,9 +8,10 @@
                     <label>Colors :</label>
                     <mat-radio-group color="accent" aria-label="Select a color" [(ngModel)]="choosedColor"
                         (change)="onColorChange()">
-                        <mat-radio-button value="Cobra"> Cobra </mat-radio-button>
-                        <mat-radio-button value="Python"> Python </mat-radio-button>
-                        <mat-radio-button value="BlackMamba"> Black Mamba </mat-radio-button>
+                        <mat-radio-button value="Koi"> Koi </mat-radio-button>
+                        <mat-radio-button value="Carp"> Carp </mat-radio-button>
+                        <mat-radio-button value="Yin"> Yin </mat-radio-button>
+                        <mat-radio-button value="Yang"> Yang </mat-radio-button>
                     </mat-radio-group>
 
                 </section>
@@ -48,6 +49,28 @@
                         <input matSliderThumb [(ngModel)]="fishSpeed" #slider />
                     </mat-slider>
                 </section>
+
+                <section class="size-section">
+                    <label>Fish Parameters :</label>
+                    <label> PectW :</label>
+                    <mat-slider color="accent" [max]="200" [min]="1" [step]="5" [discrete]="true">
+                        <input matSliderThumb [(ngModel)]="pectoralWidth" #slider />
+                    </mat-slider>
+                    <label> PectH :</label>
+                    <mat-slider color="accent" [max]="200" [min]="1" [step]="5" [discrete]="true">
+                        <input matSliderThumb [(ngModel)]="pectoralHeight" #slider />
+                    </mat-slider>
+                    <label> DeltaX :</label>
+                    <mat-slider color="accent" [max]="200" [min]="-200" [step]="5" [discrete]="true">
+                        <input matSliderThumb [(ngModel)]="deltaX" #slider />
+                    </mat-slider>
+                    <label> DeltaY :</label>
+                    <mat-slider color="accent" [max]="200" [min]="-200" [step]="5" [discrete]="true">
+                        <input matSliderThumb [(ngModel)]="deltaY" #slider />
+                    </mat-slider>
+                </section>
+
+        
             </mat-card-content>
 
         </mat-card>

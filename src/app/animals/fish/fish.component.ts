@@ -42,7 +42,7 @@ export class FishComponent implements OnInit, OnDestroy {
   // Fish logic
   joints: { x: number; y: number; size: number }[] = [];
   angles: number[] = [];
-  bodyWidth : number[] = [68, 81, 84, 83, 77, 64, 51, 38, 32, 19];
+  bodyWidth: number[] = [68, 81, 84, 83, 77, 64, 51, 38, 32, 19, 0, 20];
   chainLength = 12; // Number of joints in the Fish
   jointLength = 64; // Distance between each joint
   maxAngleChange = Math.PI / 8;
@@ -55,13 +55,25 @@ export class FishComponent implements OnInit, OnDestroy {
 
   fishSpeed: number = 4;
 
+
+  //Fish params
+  pectoralWidth = 96;
+  pectoralHeight = 46;
+
+  ventralWidth = 45;
+  ventralHeight = 25;
+  deltaX: number = 0;
+  deltaY: number = 0;
+
   //fish art
-  colors: { body: string; outline: string; eyes: string } = {
+  colors: { body: string; outline: string; fin: string; eyes: string } = {
     body: '#d7e3ff',
-    outline: '#d7e3ff',
-    eyes: '#005cbb',
+    outline: '#7cabff',
+    fin: '#abc7ff',
+    eyes: '#f0faff',
   };
-  choosedColor: string = 'Cobra';
+
+  choosedColor: string = 'Koi';
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object,
     private utilService: UtilsService,
@@ -140,20 +152,29 @@ export class FishComponent implements OnInit, OnDestroy {
     console.log(this.choosedColor);
 
     switch (this.choosedColor) {
-      case 'Python':
-        this.colors.body = '#68b252';
-        this.colors.outline = '#0b242d';
-        this.colors.eyes = '#acac3f';
+      case 'Carp':
+        this.colors.body = '#da4f2a';
+        this.colors.outline = '#35313f';
+        this.colors.fin = '#fcf4f0';
+        this.colors.eyes = '#fcf4f0';
         break;
-      case 'BlackMamba':
+      case 'Yin':
         this.colors.body = '#070a13';
-        this.colors.outline = '#070a13';
-        this.colors.eyes = '#f31015';
+        this.colors.outline = '#3C3D37';
+        this.colors.fin = '#070a13';
+        this.colors.eyes = '#fcf4f0';
         break;
-      case 'Cobra':
-        this.colors.body = '#d7e3ff';
-        this.colors.outline = '#d7e3ff';
-        this.colors.eyes = '#005cbb';
+      case 'Yang':
+        this.colors.body = '#fcf4f0';
+        this.colors.outline = '#070a13';
+        this.colors.fin = '#fcf4f0';
+        this.colors.eyes = '#070a13';
+        break;
+      case 'Koi':
+        this.colors.body = '#abc7ff';
+        this.colors.outline = '#7cabff';
+        this.colors.fin = '#d7e3ff'
+        this.colors.eyes = '#f0faff';
         break;
 
       default:
@@ -186,7 +207,7 @@ export class FishComponent implements OnInit, OnDestroy {
       this.joints.push({
         x: startX - i * this.jointLength,
         y: startY,
-        size: this.getBodyWidth(i),
+        size: this.bodyWidth[i],
       });
       this.angles.push(0); // Default angle
     }
@@ -228,7 +249,7 @@ export class FishComponent implements OnInit, OnDestroy {
       Math.cos(this.angles[i] + angleOffset) * (this.bodyWidth[i] + lengthOffset)
     );
   }
-  
+
   getPosY(i: number, angleOffset: number, lengthOffset: number): number {
     return (
       this.joints[i].y +
@@ -236,28 +257,37 @@ export class FishComponent implements OnInit, OnDestroy {
     );
   }
 
-  drawHalfEllipse(
+  drawEllipse(
     ctx: CanvasRenderingContext2D,
-    position: { x: number; y: number },
+    i: number,
     angle: number,
     width: number,
     height: number,
     direction: "left" | "right" // Specify which half to draw
   ): void {
+    const angleTrans = direction === "right" ? Math.PI / 3 : - Math.PI / 3;
+    const angleRot = direction === "right" ? - Math.PI / 4 : Math.PI / 4;
+
     ctx.save(); // Save the current canvas state
-    ctx.translate(position.x, position.y); // Move to the position of the joint
-    ctx.rotate(angle); // Rotate the canvas to align the ellipse
-  
-    const startAngle = direction === "right" ? 0 : Math.PI;
-    const endAngle = direction === "right" ? Math.PI : 2 * Math.PI;
-  
+    ctx.fillStyle = this.colors.fin;
+    ctx.strokeStyle = this.colors.outline;
+    ctx.lineWidth = 4;
+    const posX = this.getPosX(i, angleTrans, 0);
+    const posY = this.getPosY(i, angleTrans, 0);
+    ctx.translate(posX, posY); // Move to the position of the joint
+    ctx.rotate(angle + angleRot); // Rotate the canvas to align the ellipse
+
+
     ctx.beginPath();
-    ctx.ellipse(0, 0, width / 2, height / 2, 0, startAngle, endAngle);
+    // ctx.ellipse(this.deltaX, this.deltaY, width , height, 0, startAngle, endAngle);
+    ctx.ellipse(this.deltaX, this.deltaY, width, height, 0, 0, 2 * Math.PI);
+
     ctx.stroke(); // Outline the half-ellipse
     ctx.fill(); // Fill the half-ellipse
+    ctx.stroke();
     ctx.restore(); // Restore the canvas state
   }
-  
+
 
   drawFish(): void {
     const canvas = document.getElementById('fishCanvas') as HTMLCanvasElement;
@@ -272,158 +302,149 @@ export class FishComponent implements OnInit, OnDestroy {
     const joints = this.joints;
     const bodyWidth = this.bodyWidth;
 
+    const headToMid1 = this.utilService.relativeAngleDiff(angles[0], angles[6]);
+    const headToMid2 = this.utilService.relativeAngleDiff(angles[0], angles[7]);
+
+    const headToTail = headToMid1 + this.utilService.relativeAngleDiff(angles[6], angles[11]);
 
 
-  // Fish colors
-  const bodyColor = "rgba(58, 124, 165, 1)";
-  const finColor = "rgba(129, 195, 215, 1)";
-
-  ctx.lineWidth = 4;
-  ctx.strokeStyle = "#FFFFFF";
-  ctx.fillStyle = finColor;
-
-  const pectoralWidhth = 160*2;
-  const pectoralHeight = 64*2;
-
-  const ventralWidhth = 96*1.5;
-  const ventralHeight = 32*1.5;
-
-  // === PECTORAL FINS ===
-  // === START PECTORAL FINS ===
-  // ctx.save(); // Save the current transformation state
-  // ctx.translate(this.getPosX(3, Math.PI / 3, 0), this.getPosY(3, Math.PI / 3, 0)); // Move to the position for the right fin
-  // ctx.rotate(this.angles[2] - Math.PI / 4); // Rotate based on the angle of the fin
-  // this.drawEllipse(ctx,  joints[3], 0, 160, 64); // Draw the right fin
-  // ctx.restore(); // Restore the original transformation state
-
-  // ctx.save(); // Save the current transformation state
-  // ctx.translate(this.getPosX(3, -Math.PI / 3, 0), this.getPosY(3, -Math.PI / 3, 0)); // Move to the position for the left fin
-  // ctx.rotate(this.angles[2] + Math.PI / 4); // Rotate based on the angle of the fin
-  // this.drawEllipse(ctx, joints[3], 0, 160, 64); // Draw the left fin
-  // ctx.restore(); // Restore the original transformation state
-  //=== END PECTORAL FINS ===
-
-  this.drawHalfEllipse(ctx, joints[3], angles[2], pectoralWidhth, pectoralHeight, "right");
-  this.drawHalfEllipse(ctx, joints[3], angles[2], pectoralWidhth, pectoralHeight, "left");
-
-  // this.drawEllipse(ctx, joints[3], angles[2] - Math.PI / 4, pectoralWidhth, pectoralHeight); // Right
-  // this.drawEllipse(ctx, joints[3], angles[2] + Math.PI / 4, pectoralWidhth, pectoralHeight); // Left
-
-  // // === VENTRAL FINS ===
-  // this.drawEllipse(ctx, joints[7], angles[6] - Math.PI / 4, ventralWidhth, ventralHeight); // Right
-  // this.drawEllipse(ctx, joints[7], angles[6] + Math.PI / 4, ventralWidhth, ventralHeight); // Left
-
-  // === CAUDAL FIN ===
-  ctx.beginPath();
-  for (let i = 8; i < 12; i++) {
-    const tailWidth = 1.5 * angles[0] * (i - 8) ** 2;
-    const posX = joints[i].x + Math.cos(angles[i] - Math.PI / 2) * tailWidth;
-    const posY = joints[i].y + Math.sin(angles[i] - Math.PI / 2) * tailWidth;
-    ctx.lineTo(posX, posY);
-  }
-  for (let i = 11; i >= 8; i--) {
-    const tailWidth = Math.max(-13, Math.min(13, angles[0] * 6));
-    const posX = joints[i].x + Math.cos(angles[i] + Math.PI / 2) * tailWidth;
-    const posY = joints[i].y + Math.sin(angles[i] + Math.PI / 2) * tailWidth;
-    ctx.lineTo(posX, posY);
-  }
-  ctx.closePath();
-  ctx.fillStyle = finColor;
-  ctx.fill();
-
-  // === BODY ===
-  ctx.beginPath();
-  for (let i = 0; i < 10; i++) {
-    const posX = joints[i].x + Math.cos(angles[i] + Math.PI / 2) * bodyWidth[i];
-    const posY = joints[i].y + Math.sin(angles[i] + Math.PI / 2) * bodyWidth[i];
-    ctx.lineTo(posX, posY);
-  }
-  for (let i = 9; i >= 0; i--) {
-    const posX = joints[i].x + Math.cos(angles[i] - Math.PI / 2) * bodyWidth[i];
-    const posY = joints[i].y + Math.sin(angles[i] - Math.PI / 2) * bodyWidth[i];
-    ctx.lineTo(posX, posY);
-  }
-
-  // Top of head
-  let angle = this.angles[0] || 0;
-  let width = this.getBodyWidth(0);
-  ctx.arc(head.x+4, head.y+4, width, angle - Math.PI / 6, angle + Math.PI / 6);
+    // Fish colors
 
 
-  ctx.closePath();
-  ctx.fillStyle = bodyColor;
-  ctx.fill();
+    ctx.fillStyle = this.colors.body; // Snake body color
+    ctx.strokeStyle = this.colors.outline; // Snake outline
+    ctx.lineWidth = 4;
 
-  // === DORSAL FIN ===
-  ctx.beginPath();
-  ctx.moveTo(joints[4].x, joints[4].y);
-  ctx.bezierCurveTo(
-    joints[5].x,
-    joints[5].y,
-    joints[6].x,
-    joints[6].y,
-    joints[7].x,
-    joints[7].y
-  );
-  ctx.bezierCurveTo(
-    joints[6].x + Math.cos(angles[6] + Math.PI / 2) * angles[0] * 16,
-    joints[6].y + Math.sin(angles[6] + Math.PI / 2) * angles[0] * 16,
-    joints[5].x + Math.cos(angles[5] + Math.PI / 2) * angles[0] * 16,
-    joints[5].y + Math.sin(angles[5] + Math.PI / 2) * angles[0] * 16,
-    joints[4].x,
-    joints[4].y
-  );
-  ctx.closePath();
-  ctx.fillStyle = finColor;
-  ctx.fill();
 
-  // Draw eyes
+    // === PECTORAL FINS ===
+    this.drawEllipse(ctx, 3, angles[2], this.pectoralWidth, this.pectoralHeight, "right");
+    this.drawEllipse(ctx, 3, angles[2], this.pectoralWidth, this.pectoralHeight, "left");
 
-  const eyeSize = 15;
-  const eyeOffset = width - eyeSize - 15;
+    // === VENTRAL FINS ===
+    this.drawEllipse(ctx, 7, angles[6], this.ventralWidth, this.ventralHeight, "right");
+    this.drawEllipse(ctx, 7, angles[6], this.ventralWidth, this.ventralHeight, "left");
 
-  ctx.fillStyle = finColor;
-
-  ctx.beginPath();
-  ctx.arc(
-    head.x + Math.cos(this.angles[0] + Math.PI / 2) * eyeOffset,
-    head.y + Math.sin(this.angles[0] + Math.PI / 2) * eyeOffset,
-    eyeSize,
-    0,
-    Math.PI * 2
-  );
-  ctx.fill();
-
-  ctx.beginPath();
-  ctx.arc(
-    head.x + Math.cos(this.angles[0] - Math.PI / 2) * eyeOffset,
-    head.y + Math.sin(this.angles[0] - Math.PI / 2) * eyeOffset,
-    eyeSize,
-    0,
-    Math.PI * 2
-  );
-  ctx.fill();
-  }
-
-  drawEllipse(
-    ctx: CanvasRenderingContext2D,
-    joint: { x: number; y: number },
-    angle: number,
-    width: number,
-    height: number,
-    offsetX = 0
-  ) {
-    ctx.save();
-    ctx.translate(joint.x + offsetX, joint.y);
-    ctx.rotate(angle);
+    // === CAUDAL FIN ===
+    ctx.fillStyle = this.colors.fin; // Snake body color
     ctx.beginPath();
-    ctx.ellipse(0, 0, width / 2, height / 2, 0, 0, 2 * Math.PI);
+
+    for (let i = 8; i < 12; i++) {
+      const tailWidth = 1.5 * headToTail * (i - 8) ** 2;
+      const posX = joints[i].x + Math.cos(angles[i] - Math.PI / 2) * tailWidth;
+      const posY = joints[i].y + Math.sin(angles[i] - Math.PI / 2) * tailWidth;
+
+      ctx.lineTo(posX, posY);
+    }
+
+    for (let i = 11; i >= 8; i--) {
+      const tailWidth = Math.max(-13, Math.min(13, headToTail * 6));
+      const posX = joints[i].x + Math.cos(angles[i] + Math.PI / 2) * tailWidth;
+      const posY = joints[i].y + Math.sin(angles[i] + Math.PI / 2) * tailWidth;
+      ctx.lineTo(posX, posY);
+    }
+
+    ctx.closePath();
     ctx.fill();
-    ctx.restore();
+    ctx.stroke();
+
+    // === BODY ===
+    ctx.fillStyle = this.colors.body; // Snake body color
+    ctx.beginPath();
+    for (let i = 0; i < 10; i++) {
+      const posX = joints[i].x + Math.cos(angles[i] + Math.PI / 2) * bodyWidth[i];
+      const posY = joints[i].y + Math.sin(angles[i] + Math.PI / 2) * bodyWidth[i];
+      ctx.lineTo(posX, posY);
+    }
+
+    // bottom of tail
+    const tail = this.joints[10 - 1];
+    let tailangle = this.angles[10 - 1] || 0;
+    let tailwidth = this.bodyWidth[10 - 1];
+    ctx.arc(
+      tail.x,
+      tail.y,
+      tailwidth,
+      tailangle + Math.PI / 2,
+      tailangle - Math.PI / 2
+    );
+
+    for (let i = 9; i >= 0; i--) {
+      const posX = joints[i].x + Math.cos(angles[i] - Math.PI / 2) * bodyWidth[i];
+      const posY = joints[i].y + Math.sin(angles[i] - Math.PI / 2) * bodyWidth[i];
+      ctx.lineTo(posX, posY);
+
+    }
+
+    // Top of head
+    let angle = this.angles[0] || 0;
+    let width = this.bodyWidth[0];
+    ctx.arc(head.x + 4, head.y + 4, width, angle - Math.PI / 5, angle + Math.PI / 5);
+
+    ctx.closePath();
+    ctx.fill();
+    ctx.stroke();
+
+    // === DORSAL FIN ===
+    ctx.fillStyle = this.colors.fin; // Snake body color
+
+    ctx.beginPath();
+    ctx.moveTo(joints[4].x, joints[4].y);
+    ctx.bezierCurveTo(
+      joints[5].x,
+      joints[5].y,
+      joints[6].x,
+      joints[6].y,
+      joints[7].x,
+      joints[7].y
+    );
+    ctx.bezierCurveTo(
+      joints[6].x + Math.cos(angles[6] + Math.PI / 2) * headToMid2 * 16,
+      joints[6].y + Math.sin(angles[6] + Math.PI / 2) * headToMid2 * 16,
+      joints[5].x + Math.cos(angles[5] + Math.PI / 2) * headToMid1 * 16,
+      joints[5].y + Math.sin(angles[5] + Math.PI / 2) * headToMid1 * 16,
+      joints[4].x,
+      joints[4].y
+    );
+    ctx.closePath();
+    ctx.fill();
+    ctx.stroke();
+
+    // Draw eyes
+
+    const eyeSize = 15;
+    const eyeOffset = width - eyeSize - 15;
+
+    ctx.fillStyle = this.colors.eyes;
+
+    ctx.beginPath();
+    ctx.arc(
+      head.x + Math.cos(this.angles[0] + Math.PI / 2) * eyeOffset,
+      head.y + Math.sin(this.angles[0] + Math.PI / 2) * eyeOffset,
+      eyeSize,
+      0,
+      Math.PI * 2
+    );
+    ctx.fill();
+    ctx.stroke();
+
+    ctx.closePath();
+
+    ctx.beginPath();
+    ctx.arc(
+      head.x + Math.cos(this.angles[0] - Math.PI / 2) * eyeOffset,
+      head.y + Math.sin(this.angles[0] - Math.PI / 2) * eyeOffset,
+      eyeSize,
+      0,
+      Math.PI * 2
+    );
+    ctx.fill();
+    ctx.stroke();
+    ctx.closePath();
   }
+
 
   drawChain(): void {
-    const canvas = document.getElementById('FishCanvas') as HTMLCanvasElement;
+    const canvas = document.getElementById('fishCanvas') as HTMLCanvasElement;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
@@ -458,6 +479,13 @@ export class FishComponent implements OnInit, OnDestroy {
     ctx.fill();
     ctx.stroke();
 
+    this.drawEllipse(ctx, 3, this.angles[2], 40, 10, "right");
+    this.drawEllipse(ctx, 3, this.angles[2], 40, 10, "left");
+
+    this.drawEllipse(ctx, 7, this.angles[6], 20, 10, "right");
+    this.drawEllipse(ctx, 7, this.angles[6], 20, 10, "left");
+
+
     for (let i = 0; i < this.joints.length; i++) {
       ctx.beginPath();
       ctx.fillStyle = this.colors.body; // Fish body color
@@ -481,16 +509,6 @@ export class FishComponent implements OnInit, OnDestroy {
     }
   }
 
-  getBodyWidth(index: number): number {
-    switch (index) {
-      case 0:
-        return 76;
-      case 1:
-        return 80;
-      default:
-        return 64 - index;
-    }
-  }
 
   onMouseMove(event: MouseEvent): void {
     this.mouseX = event.clientX;

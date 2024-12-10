@@ -15,8 +15,6 @@ export class UtilsService {
 
 
 
-
-
   constructor() {}
 
   updateBoardSize(boardWidth: number, boardHeight: number) {
@@ -98,6 +96,8 @@ export class UtilsService {
   }
 
   
+
+  
 }
 
 /**
@@ -156,5 +156,35 @@ export class Vector {
   magnitude(): number {
     return Math.sqrt(this.x * this.x + this.y * this.y);
   }
+  setMag(mag: number): Vector {
+    const len = Math.sqrt(this.x * this.x + this.y * this.y);
+    if (len === 0) return new Vector(0, 0);
+    return new Vector((this.x / len) * mag, (this.y / len) * mag);
+  }
 }
 
+export class PVector {
+  constructor(public x: number, public y: number) {}
+
+  static add(v1: PVector, v2: PVector): PVector {
+    return new PVector(v1.x + v2.x, v1.y + v2.y);
+  }
+
+  static sub(v1: PVector, v2: PVector): PVector {
+    return new PVector(v1.x - v2.x, v1.y - v2.y);
+  }
+
+  static dist(v1: PVector, v2: PVector): number {
+    return Math.sqrt(Math.pow(v1.x - v2.x, 2) + Math.pow(v1.y - v2.y, 2));
+  }
+
+  static lerp(v1: PVector, v2: PVector, t: number): PVector {
+    return new PVector(v1.x + (v2.x - v1.x) * t, v1.y + (v2.y - v1.y) * t);
+  }
+
+  setMag(mag: number): PVector {
+    const len = Math.sqrt(this.x * this.x + this.y * this.y);
+    if (len === 0) return new PVector(0, 0);
+    return new PVector((this.x / len) * mag, (this.y / len) * mag);
+  }
+}

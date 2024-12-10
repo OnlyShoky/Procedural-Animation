@@ -374,5 +374,6 @@ export class SnakeComponent implements OnInit, OnDestroy {
   onMouseMove(event: MouseEvent): void {
     this.mouseX = event.clientX;
     this.mouseY = event.clientY;
+    
   }
 }

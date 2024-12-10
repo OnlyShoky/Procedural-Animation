@@ -1,1 +1,117 @@
-<p>lizard works!</p>
+<div
+  class="board"
+  [style.width.px]="boardWidth"
+  [style.height.px]="boardHeight"
+  (mousemove)="onMouseMove($event)"
+>
+  <!-- <div class="Lizard-info">
+    <p>Lizard position:</p>
+    <p>X: {{ this.mouseX | number : "1.0-2" }} px</p>
+    <p>Y: {{ this.mouseY | number : "1.0-2" }} px</p>
+    <p>X: {{ this.boardWidth | number : "1.0-2" }} px</p>
+    <p>Y: {{ this.boardHeight | number : "1.0-2" }} px</p>
+    <p> Keyboard angle : {{ this.keyboardAngle | number : "1.0-2" }}</p>
+    <p> Lizard angle : {{ this.angles[0] | number : "1.0-2" }}</p>
+  </div> -->
+
+  <div class = "lizard-parameters-container">
+  <mat-card class="lizard-parameters">
+    <mat-card-content>
+      <section>
+        <label>Colors :</label>
+        <mat-radio-group color="accent" aria-label="Select a color" [(ngModel)]="choosedColor" (change)="onColorChange()">
+        <mat-radio-button value="gila "> Gila </mat-radio-button>
+          <mat-radio-button value="skink"> Skink </mat-radio-button>
+          <mat-radio-button value="iguana"> Iguana </mat-radio-button>
+        </mat-radio-group>
+        
+      </section>
+
+      <section>
+        <label>Movement :</label>
+        <mat-radio-group color="accent" aria-label="Select a movement" value="keyboard"  (change)="toggleMovement()">
+          <mat-radio-button value="mouse"> Mouse </mat-radio-button>
+          <mat-radio-button value="keyboard"> Keyboard </mat-radio-button>
+        </mat-radio-group>
+        
+      </section>
+
+      <section>
+        <label>Visual :</label>
+        <mat-radio-group color="accent" aria-label="Select a movement" value="lizard"  (change)="toggleVisual()">
+          <mat-radio-button value="lizard"> Lizard </mat-radio-button>
+          <mat-radio-button value="chain"> Chain </mat-radio-button>
+        </mat-radio-group>
+        
+      </section>
+
+      <section class="size-section">
+        <label>lizard lenght :</label>
+        <mat-slider color="accent" [max]="100" [min]="5" [step]="5" [discrete]="true">
+          <input matSliderThumb [(ngModel)]="jointLength" #slider />
+        </mat-slider>
+      </section>
+
+      <section class="size-section">
+        <label>lizard Speed :</label>
+        <mat-slider color="accent" [max]="20" [min]="1" [step]="2" [discrete]="true">
+          <input matSliderThumb [(ngModel)]="lizardSpeed" #slider />
+        </mat-slider>
+      </section>
+    </mat-card-content>
+
+  </mat-card>
+
+  <ng-container *ngIf="isKeyboardMode">
+  <mat-card class="lizard-controls">
+    <label style ="align-self: center; margin: 1rem;"> ('m' for toggle)</label>
+    
+    <mat-card-content>
+      <div class="arrow-buttons">
+        <!-- Left Arrow Button -->
+        <button
+          mat-mini-fab 
+          color="primary"
+          [class.active]="this.pressedKeys.has('ArrowLeft')"
+          (mousedown)="this.pressedKeys.add('ArrowLeft')"
+          (mouseup)="this.pressedKeys.delete('ArrowLeft')"
+        >
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+  
+        <!-- Up Arrow Button -->
+        <button
+        mat-mini-fab 
+          color="primary"
+          [class.active]="this.pressedKeys.has('ArrowUp')"
+          (mousedown)="this.pressedKeys.add('ArrowUp')"
+          (mouseup)="this.pressedKeys.delete('ArrowUp')"
+        >
+          <mat-icon>arrow_upward</mat-icon>
+        </button>
+  
+        <!-- Right Arrow Button -->
+        <button
+        mat-mini-fab 
+        color="primary"
+          [class.active]="this.pressedKeys.has('ArrowRight')"
+          (mousedown)="this.pressedKeys.add('ArrowRight')"
+          (mouseup)="this.pressedKeys.delete('ArrowRight')"
+        >
+          <mat-icon>arrow_forward</mat-icon>
+        </button>
+      </div>
+
+      
+    </mat-card-content>
+  </mat-card>
+</ng-container>
+</div>
+
+
+  <canvas
+    id="lizardCanvas"
+    [attr.width]="boardWidth"
+    [attr.height]="boardHeight"
+  ></canvas>
+</div>

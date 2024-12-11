@@ -4,23 +4,38 @@
     flex-direction: line;
     justify-content: space-between;
     align-items:center;
-    padding: 1rem;
+    padding: 0.5rem;
     text-align: center;
     width: 100%;
     height: auto;
     
-  
-    /* Box shadow for a clean, elevated look */
-    // box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   }
   
+  .icon {
+    display: flex;
+    align-items: center;
+  }
+  
+  .icon svg {
+    vertical-align: bottom;
+  }
+
   .header-title {
+    font-family: "Permanent Marker", serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+
     
   
     h1 {
       margin: 0;
       font-size: 2rem;
-      font-weight: bold;
+      // font-weight: bold;
+      font-family: "Permanent Marker", serif;
+
     }
   
     p {
@@ -35,6 +50,7 @@
     display: flex;
     align-self: flex-end;
     gap: 2rem;
+    padding: 1rem;
   
     a {
       font-size: 1rem;
@@ -51,12 +67,12 @@
    
 
 .btn{
-  // margin-top: -0.1rem;
-  // margin: -0.1rem 0 -0.3rem -0.3rem;
-  // margin : -0.1rem 0 -0.3rem -0.3rem;
+
   margin-top:-0.1rem ;
   margin-left: -0.3rem;
   margin-right: -0.3rem;
+  font-family: "Permanent Marker", serif;
+  font-weight: bold;
   
 }
   

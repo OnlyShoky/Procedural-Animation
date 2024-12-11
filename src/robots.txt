@@ -1,0 +1,3 @@
+User-agent: *
+Disallow: /
+SyntaxError: This is an invalid directive

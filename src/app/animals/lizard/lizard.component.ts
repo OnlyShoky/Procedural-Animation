@@ -309,9 +309,10 @@ export class LizardComponent implements OnInit, OnDestroy {
     for (let i = 0; i < this.arms.length; i++) {
       ctx.beginPath();
 
-      const shoulder = new PVector(this.arms[i].joints[2].x, this.arms[i].joints[2].y); // Shoulder joint
+      const shoulder = new PVector(this.arms[i].joints[3].x, this.arms[i].joints[3].y); // Shoulder joint
       const foot = new PVector(this.arms[i].joints[0].x, this.arms[i].joints[0].y); // Foot joint
       const elbow = this.arms[i].joints[1];
+      const body = this.joints[5];
 
       // Correct back legs for physical accuracy
       const para = PVector.sub(foot, shoulder);
@@ -332,14 +333,23 @@ export class LizardComponent implements OnInit, OnDestroy {
       // ctx.fill();
 
       // Outer Bézier curve
-      ctx.beginPath();
+      // ctx.beginPath();
+      // ctx.lineWidth = 40;
+      // ctx.strokeStyle = this.colors.outline; // Lizard outline
+      // ctx.moveTo(shoulder.x, shoulder.y);
+      // ctx.bezierCurveTo(body.x, body.y,shoulder.x, shoulder.y, elbow.x, elbow.y);
+      // ctx.stroke();
+      // ctx.closePath();
 
+      ctx.beginPath();
       ctx.lineWidth = 40;
       ctx.strokeStyle = this.colors.outline; // Lizard outline
-      ctx.moveTo(shoulder.x, shoulder.y);
-      ctx.bezierCurveTo(elbow.x, elbow.y, elbow.x, elbow.y, foot.x, foot.y);
+      // ctx.moveTo(shoulder.x, shoulder.y);
+      ctx.bezierCurveTo(shoulder.x, shoulder.y, elbow.x, elbow.y, foot.x, foot.y);
       ctx.stroke();
       ctx.closePath();
+
+      
 
       ctx.beginPath();
       ctx.arc(foot.x, foot.y, 20, 0, Math.PI * 2);
@@ -355,16 +365,25 @@ export class LizardComponent implements OnInit, OnDestroy {
 
 
 
+      //Inner Bézier curve
+
+      // ctx.beginPath();
+      // ctx.strokeStyle = this.colors.outline; // Lizard outline
+      // ctx.moveTo(shoulder.x, shoulder.y);
+      // ctx.bezierCurveTo(body.x, body.y,shoulder.x, shoulder.y, elbow.x, elbow.y);
+      // ctx.stroke();
+      // ctx.closePath();
 
       ctx.beginPath();
-      //Inner Bézier curve
       ctx.lineWidth = 32;
       ctx.strokeStyle = this.colors.body; // Lizard body color
-      ctx.moveTo(shoulder.x, shoulder.y);
-      ctx.bezierCurveTo(elbow.x, elbow.y, elbow.x, elbow.y, foot.x, foot.y);
+      // ctx.moveTo(shoulder.x, shoulder.y);
+      ctx.bezierCurveTo(shoulder.x, shoulder.y, elbow.x, elbow.y, foot.x, foot.y);
+      // ctx.bezierCurveTo(body.x, body.y, elbow.x, elbow.y, foot.x, foot.y);
       ctx.stroke();
-
       ctx.closePath();
+
+      
 
       ctx.beginPath();
       ctx.arc(foot.x, foot.y, 16, 0, Math.PI * 2);
@@ -517,6 +536,8 @@ export class LizardComponent implements OnInit, OnDestroy {
       ctx.fill();
       ctx.stroke();
     }
+
+    
   }
 
 

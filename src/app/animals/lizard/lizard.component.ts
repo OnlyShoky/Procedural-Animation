@@ -312,7 +312,6 @@ export class LizardComponent implements OnInit, OnDestroy {
       const shoulder = new PVector(this.arms[i].joints[3].x, this.arms[i].joints[3].y); // Shoulder joint
       const foot = new PVector(this.arms[i].joints[0].x, this.arms[i].joints[0].y); // Foot joint
       const elbow = this.arms[i].joints[1];
-      const body = this.joints[5];
 
       // Correct back legs for physical accuracy
       const para = PVector.sub(foot, shoulder);
@@ -326,20 +325,8 @@ export class LizardComponent implements OnInit, OnDestroy {
         elbow.y += perp.y;
       }
 
-      
-      // // Add rounded end (hand or claw)
-      // ctx.fillStyle = this.colors.body; // Same as body color for smooth transition
-      // ctx.arc(foot.x, foot.y, 5, 0, Math.PI * 2); // Draws a circle at the foot position
-      // ctx.fill();
-
       // Outer Bézier curve
-      // ctx.beginPath();
-      // ctx.lineWidth = 40;
-      // ctx.strokeStyle = this.colors.outline; // Lizard outline
-      // ctx.moveTo(shoulder.x, shoulder.y);
-      // ctx.bezierCurveTo(body.x, body.y,shoulder.x, shoulder.y, elbow.x, elbow.y);
-      // ctx.stroke();
-      // ctx.closePath();
+
 
       ctx.beginPath();
       ctx.lineWidth = 40;
@@ -350,7 +337,6 @@ export class LizardComponent implements OnInit, OnDestroy {
       ctx.closePath();
 
       
-
       ctx.beginPath();
       ctx.arc(foot.x, foot.y, 20, 0, Math.PI * 2);
       ctx.fillStyle = this.colors.outline;
@@ -366,25 +352,14 @@ export class LizardComponent implements OnInit, OnDestroy {
 
 
       //Inner Bézier curve
-
-      // ctx.beginPath();
-      // ctx.strokeStyle = this.colors.outline; // Lizard outline
-      // ctx.moveTo(shoulder.x, shoulder.y);
-      // ctx.bezierCurveTo(body.x, body.y,shoulder.x, shoulder.y, elbow.x, elbow.y);
-      // ctx.stroke();
-      // ctx.closePath();
-
       ctx.beginPath();
       ctx.lineWidth = 32;
       ctx.strokeStyle = this.colors.body; // Lizard body color
-      // ctx.moveTo(shoulder.x, shoulder.y);
       ctx.bezierCurveTo(shoulder.x, shoulder.y, elbow.x, elbow.y, foot.x, foot.y);
-      // ctx.bezierCurveTo(body.x, body.y, elbow.x, elbow.y, foot.x, foot.y);
       ctx.stroke();
       ctx.closePath();
 
       
-
       ctx.beginPath();
       ctx.arc(foot.x, foot.y, 16, 0, Math.PI * 2);
       ctx.fillStyle = this.colors.body;
@@ -401,7 +376,6 @@ export class LizardComponent implements OnInit, OnDestroy {
       
     }
     // === END ARMS ===
-
 
 
     // Draw Lizard body

@@ -1,27 +1,111 @@
-# ProceduralAnimation
+# Procedural Animation with Angular 17
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.10.
+Welcome to the **Procedural Animation Project** repository! This project leverages the power of Angular 17 to create procedural animations inspired by natural movements, such as a lizard walking, a snake slithering, and a fish swimming, using constraints and FABRIK (Forward And Backward Reaching Inverse Kinematics) algorithms.
 
-## Development server
+---
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## Project Highlights
 
-## Code scaffolding
+### Objective
+This project demonstrates how Angular 17 can be used beyond traditional web applications, showcasing its ability to handle creative and interactive animations driven by complex algorithms.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+### Key Features
+- **Procedural Animations**:
+  - Realistic simulations of a lizard's walk, a snake's slither, and a fish's swim.
+  - Powered by FABRIK constraints for smooth and natural movements.
+- **Physics-Based Constraints**:
+  - Implements kinematic constraints to emulate realistic joint and limb movements.
+  - Optimized for performance within a web-based environment.
+- **Angular Ecosystem**:
+  - Standalone components for reusable and modular code.
+  - SCSS for organized and dynamic styling.
+  - RxJS for responsive data flow and interactivity.
 
-## Build
+---
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+## Technologies Used
 
-## Running unit tests
+### Core Framework
+- **Angular 17**: A robust and scalable front-end framework.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+### Libraries & Tools
+- **FABRIK Algorithm**: For inverse kinematics and realistic animation constraints.
+- **TypeScript**: Ensures type safety and clean, maintainable code.
+- **RxJS**: For managing animation states and event-driven behaviors.
+- **SCSS**: For designing visually appealing and adaptable styles.
 
-## Running end-to-end tests
+---
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+## Getting Started
 
-## Further help
+### Prerequisites
+- Node.js and npm installed on your system.
+- Angular CLI (v17 or later).
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+### Installation Steps
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/your-username/your-repository.git
+   ```
+2. Navigate to the project directory:
+   ```bash
+   cd your-repository
+   ```
+3. Install dependencies:
+   ```bash
+   npm install
+   ```
+4. Start the development server:
+   ```bash
+   ng serve
+   ```
+5. Open your browser at:
+   ```
+   http://localhost:4200
+   ```
+
+---
+
+## How It Works
+
+### Animation Breakdown
+1. **Lizard Walk**:
+   - Implements limb constraints to replicate a natural walking cycle.
+   - Uses FABRIK to calculate joint positions dynamically.
+
+2. **Snake Slither**:
+   - Simulates wave-like motion with sinusoidal curves.
+   - Constraints ensure smooth transitions and prevent unnatural distortions.
+
+3. **Fish Swim**:
+   - Utilizes oscillatory movements to mimic realistic swimming patterns.
+   - FABRIK ensures the fish body moves fluidly through water-like paths.
+
+### Why FABRIK?
+The Forward And Backward Reaching Inverse Kinematics algorithm provides an efficient and intuitive method to resolve kinematic chains, ensuring:
+- Minimal computational overhead.
+- Smooth and continuous motion suitable for real-time rendering.
+
+---
+
+## Contributing
+We welcome contributions to enhance the animations or add new features. Feel free to fork the repository and submit a pull request.
+
+---
+
+## License
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+---
+
+## Contact
+For any inquiries, feedback, or collaboration opportunities, feel free to reach out:
+
+**Mohamed El Mourabit Agharbi**  
+- **Email**: mohamed.elmoag@gmail.com  
+- **Portfolio**: [mohamed-elmourabit.netlify.app](https://mohamed-elmourabit.netlify.app/home)
+
+---
+
+Dive into the code, explore the animations, and feel free to suggest improvements or share your thoughts!
+

@@ -29,7 +29,7 @@
               "src/favicon.ico",
               "src/assets",
               "src/robots.txt",
-              "src/assets/animal-motion-preview.jpg"
+              "src/assets/animal-motion-preview.png"
             ],
             "styles": [
               "src/styles.scss",

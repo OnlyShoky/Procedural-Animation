@@ -107,5 +107,12 @@ For any inquiries, feedback, or collaboration opportunities, feel free to reach 
 
 ---
 
+While working on my Angular 17 project, I came across a fascinating blog post that explores the concept of constraints and their applications in software development:
+👉 Understanding Constraints.
+
+Big thanks to [\[Johnathon Selstad\]](https://zalo.github.io/blog/constraints/) for this insightful work that inspired me to think differently about problem-solving. Highly recommend checking it out!"
+
+---
+
 Dive into the code, explore the animations, and feel free to suggest improvements or share your thoughts!
 

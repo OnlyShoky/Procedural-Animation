@@ -4,6 +4,10 @@ Welcome to the **Procedural Animation Project** repository! This project leverag
 
 ---
 
+Check it out: [Demo here](https://animalgo.netlify.app)
+
+---
+
 ## Project Highlights
 
 ### Objective

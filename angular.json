@@ -28,7 +28,8 @@
             "assets": [
               "src/favicon.ico",
               "src/assets",
-              "src/robots.txt"
+              "src/robots.txt",
+              "src/assets/animal-motion-preview.jpg"
             ],
             "styles": [
               "src/styles.scss",
